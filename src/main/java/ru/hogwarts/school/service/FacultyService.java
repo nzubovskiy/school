@@ -1,4 +1,4 @@
-package ru.hogwarts.school;
+package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
@@ -21,10 +21,10 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(Long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(null);
     }
 
-    public Faculty editFaculty(long l, Faculty faculty) {
+    public Faculty editFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 

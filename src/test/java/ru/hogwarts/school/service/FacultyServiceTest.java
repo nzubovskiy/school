@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.hogwarts.school.FacultyService;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 import java.util.Collections;
@@ -62,7 +61,7 @@ public class FacultyServiceTest {
         firstFaculty.setName("Ff");
 
         when(facultyRepository.save(firstFaculty)).thenReturn(firstFaculty);
-        assertThat(facultyService.createFaculty(firstFaculty)).isEqualTo(facultyService.editFaculty(1L, firstFaculty));
+        assertThat(facultyService.createFaculty(firstFaculty)).isEqualTo(facultyService.editFaculty(firstFaculty));
     }
 
     @Test

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.hogwarts.school.StudentService;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
@@ -63,7 +62,7 @@ public class StudentServiceTest {
         firstStudent.setName("Student1");
 
         when(studentRepository.save(firstStudent)).thenReturn(firstStudent);
-        assertThat(studentService.createStudent(firstStudent)).isEqualTo(studentService.editStudent(1L, firstStudent));
+        assertThat(studentService.createStudent(firstStudent)).isEqualTo(studentService.editStudent(firstStudent));
     }
 
     @Test

@@ -5,14 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 
-import ru.hogwarts.school.FacultyService;
+import ru.hogwarts.school.service.FacultyService;
 
 
 import java.util.Collection;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("faculties")
+@RequestMapping("/faculties")
 public class FacultyController {
     private final FacultyService facultyService;
 
@@ -20,7 +20,7 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Faculty> getFacultyInfo(@PathVariable Long id) {
         Faculty faculty = facultyService.findFaculty(id);
         if (faculty == null) {
@@ -34,8 +34,8 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
-    @GetMapping("filterByColor/")
-    public ResponseEntity <Collection<Faculty>> filterFaculty(@RequestParam(required = false) String color) {
+    @GetMapping("/filterByColor")
+    public ResponseEntity <Collection<Faculty>> filterFaculty(@RequestParam String color) {
         if (color != null && !color.isBlank()) {
             return ResponseEntity.ok(facultyService.findByColor(color));
         }
@@ -49,14 +49,11 @@ public class FacultyController {
 
     @PutMapping
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
-        Faculty foundFaculty = facultyService.editFaculty(2L, faculty);
-        if (foundFaculty == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        Faculty foundFaculty = facultyService.editFaculty(faculty);
         return ResponseEntity.ok(foundFaculty);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
