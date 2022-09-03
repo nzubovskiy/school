@@ -91,7 +91,28 @@ public class FacultyServiceTest {
         facultyService.createFaculty(firstFaculty);
         facultyService.createFaculty(secondFaculty);
 
-        when(facultyRepository.findByColor("col")).thenReturn(Collections.singletonList(secondFaculty));
-        assertThat(facultyService.findByColor("col")).contains(secondFaculty);
+        when(facultyRepository.findByColorIgnoreCase("Col")).thenReturn(Collections.singletonList(secondFaculty));
+        assertThat(facultyService.findByColor("Col")).contains(secondFaculty);
     }
+
+    @Test
+    public void findByName() {
+        Faculty firstFaculty = new Faculty();
+        firstFaculty.setId(1L);
+        firstFaculty.setName("F");
+        firstFaculty.setColor("color");
+
+        Faculty secondFaculty = new Faculty();
+        secondFaculty.setId(2L);
+        secondFaculty.setName("Fac");
+        secondFaculty.setColor("col");
+
+        facultyService.createFaculty(firstFaculty);
+        facultyService.createFaculty(secondFaculty);
+
+        when(facultyRepository.findByNameIgnoreCase("fac")).thenReturn(Collections.singletonList(secondFaculty));
+        assertThat(facultyService.findByName("fac")).contains(secondFaculty);
+    }
+
+
 }

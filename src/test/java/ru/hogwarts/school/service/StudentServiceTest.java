@@ -9,6 +9,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -94,5 +95,30 @@ public class StudentServiceTest {
 
         when(studentRepository.findByAge(12)).thenReturn(Collections.singletonList(secondStudent));
         assertThat(studentService.findByAge(12)).contains(secondStudent);
+    }
+
+    @Test
+    public void findByAgeBetween() {
+        Student firstStudent = new Student();
+        firstStudent.setId(1L);
+        firstStudent.setName("Student");
+        firstStudent.setAge(13);
+
+        Student secondStudent = new Student();
+        secondStudent.setId(2L);
+        secondStudent.setName("Student2");
+        secondStudent.setAge(12);
+
+        Student thirdStudent = new Student();
+        thirdStudent.setId(3L);
+        thirdStudent.setName("Student3");
+        thirdStudent.setAge(15);
+
+        studentService.createStudent(firstStudent);
+        studentService.createStudent(secondStudent);
+        studentService.createStudent(thirdStudent);
+
+        when(studentRepository.findByAgeBetween(12, 14)).thenReturn(List.of(firstStudent, secondStudent));
+        assertThat(studentService.findByAgeBetween(12, 14)).contains(firstStudent, secondStudent);
     }
 }
