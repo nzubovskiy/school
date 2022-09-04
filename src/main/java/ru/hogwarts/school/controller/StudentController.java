@@ -1,15 +1,11 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -19,13 +15,14 @@ public class StudentController {
 
     private final StudentService studentService;
 
+
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentInfo(@PathVariable Student id) {
-        Student student = studentService.findStudent(id);
+    public ResponseEntity<Object> getStudentInfo(@PathVariable Long id) {
+        Object student = studentService.findStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
@@ -54,22 +51,13 @@ public class StudentController {
     }
 
     @GetMapping("{id}/faculty")
-    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Student id) {
+    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.findStudent(id).getFaculty());
     }
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
-    }
-
-    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(@PathVariable Student id, @RequestParam MultipartFile avatar) throws IOException {
-        if (avatar.getSize() >= 1024 * 300) {
-            return ResponseEntity.badRequest().body("File is too big");
-        }
-        AvatarService.uploadAvatar(id, avatar);
-        return ResponseEntity.ok().build();
     }
 
     @PutMapping
