@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -10,6 +11,7 @@ import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 
 @RestController
@@ -44,17 +46,11 @@ public class FacultyController {
     }
 
     @GetMapping("/findFaculty")
-    public ResponseEntity <Collection<Faculty>> findByNameOrColorIgnoreCase(@RequestParam(required = false) String name, @RequestParam(required = false) String color) {
-        if (name != null && !name.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByName(name));
-        }
-        if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColor(color));
-        }
-        return null;
+    public ResponseEntity <Collection<Faculty>> findByNameOrColorIgnoreCase(@RequestParam String nameOrColor) {
+        return ResponseEntity.ok(facultyService.findByNameOrColor(nameOrColor));
     }
 
-    @GetMapping("/students")
+    @GetMapping("/{id}/students")
     public ResponseEntity <Collection<Student>> getFacultyStudents(@PathVariable Long id) {
         return ResponseEntity.ok(facultyService.findFaculty(id).getStudents());
     }
