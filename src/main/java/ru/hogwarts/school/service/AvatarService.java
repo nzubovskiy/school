@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -18,7 +20,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
 
-    @Value("${students.avatar.dir.path}")
+    @Value(value = "${students.avatar.dir.path}")
     private String avatarsDir;
 
     private final StudentService studentService;
@@ -29,8 +31,13 @@ public class AvatarService {
         this.avatarRepository = avatarRepository;
     }
 
+    public List<Avatar> getAll(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        return avatarRepository.findAll(pageRequest).getContent();
+    }
+
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        Student student = (Student) studentService.findStudent(studentId);
+        Student student = studentService.findStudent(studentId);
 
         Path filePath = Path.of(avatarsDir, student + "." + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
