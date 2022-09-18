@@ -1,6 +1,6 @@
 select student.name, student.age, faculty.name
 from student
-full join faculty on student.faculty_id = faculty.id;
+left join faculty on student.faculty_id = faculty.id;
 
 select student.name, student.age
 from student
