@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import ru.hogwarts.school.controller.StudentController;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.entity.Student;
 
 import static org.junit.jupiter.api.Assertions.*;
 

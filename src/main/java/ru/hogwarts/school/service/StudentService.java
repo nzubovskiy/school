@@ -3,16 +3,18 @@ package ru.hogwarts.school.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 
 @Service
 public class StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
 
@@ -34,6 +36,7 @@ public class StudentService {
         logger.info("Method editStudent called");
         return studentRepository.save(student);
     }
+
 
     public void deleteStudent(Long id) {
         logger.info("Method deleteStudent called");
@@ -65,8 +68,32 @@ public class StudentService {
         return studentRepository.getAverageAge();
     }
 
-    public List<Student> getLastFiveStudents() {
-        logger.info("Method getLastFiveStudents called");
-        return studentRepository.getLastFiveStudents();
+    public List<String> getLastStudents(int count) {
+        logger.info("Method getLastStudents called");
+        return studentRepository.getLastStudents(count).stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getStudentsNameBeginsWith(String letter) {
+        logger.info("Method getStudentsNameBeginsWith called");
+        List<Student> studentList = studentRepository.findAll();
+        String string = letter.toUpperCase();
+        return studentList.stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(s -> s.startsWith(string))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public Double  getAverageAgeThroughFindAll() {
+        logger.info("Method getAverageAgeThroughFindAll called");
+        List<Student> studentList = studentRepository.findAll();
+        return studentList.stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .orElseThrow();
+
     }
 }

@@ -1,9 +1,8 @@
-package ru.hogwarts.school.model;
+package ru.hogwarts.school.entity;
 
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 
 @Entity
 public class Avatar {

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hogwarts.school.model.Avatar;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.entity.Avatar;
+import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 
 import javax.transaction.Transactional;
@@ -21,7 +21,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Service
 @Transactional
 public class AvatarService {
-    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     @Value(value = "${students.avatar.dir.path}")
     private String avatarsDir;
