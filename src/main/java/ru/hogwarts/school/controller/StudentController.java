@@ -81,6 +81,16 @@ public class StudentController {
         return studentService.getStudentsNameBeginsWith(letter);
     }
 
+    @GetMapping("getStudentsList")
+    public String getStudentsList() {
+        return studentService.getStudentsList();
+    }
+
+    @GetMapping("getStudentsListSync")
+    public String getStudentsListSync() {
+        return studentService.getStudentsListSync();
+    }
+
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);

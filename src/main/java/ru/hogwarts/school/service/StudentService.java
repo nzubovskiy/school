@@ -2,8 +2,10 @@ package ru.hogwarts.school.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.entity.Student;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
     private final Logger logger = LoggerFactory.getLogger(StudentService.class);
+
+    public Object flag = new Object();
 
     private final StudentRepository studentRepository;
 
@@ -93,7 +97,63 @@ public class StudentService {
         return studentList.stream()
                 .mapToDouble(Student::getAge)
                 .average()
-                .orElseThrow();
+                .orElseThrow(StudentNotFoundException::new);
 
+    }
+
+    public String getStudentsList() {
+        logger.info("Method getStudentsList called");
+        List<Student> studentList = studentRepository.findAllSortedById();
+
+        studentToConsole(studentList.get(0));
+        studentToConsole(studentList.get(1));
+
+        new Thread(() -> {
+            studentToConsole(studentList.get(2));
+            studentToConsole(studentList.get(3));
+        }).start();
+        new Thread(() -> {
+            studentToConsole(studentList.get(4));
+            studentToConsole(studentList.get(5));
+        }).start();
+        return " ";
+    }
+
+    public String getStudentsListSync() {
+        logger.info("Method getStudentsListSync called");
+        List<Student> studentList = studentRepository.findAllSortedById();
+
+        studentToConsoleSync(studentList.get(0));
+        studentToConsoleSync(studentList.get(1));
+
+        new Thread(() -> {
+            studentToConsoleSync(studentList.get(2));
+            studentToConsoleSync(studentList.get(3));
+        }).start();
+        new Thread(() -> {
+            studentToConsoleSync(studentList.get(4));
+            studentToConsoleSync(studentList.get(5));
+        }).start();
+        return " ";
+    }
+
+    public void studentToConsole(Student student) {
+        try {
+            System.out.println(student);
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            System.out.println("Thread has been interrupted");
+        }
+    }
+
+    public void studentToConsoleSync(Student student) {
+        try {
+            synchronized (flag) {
+                System.out.println(student);
+                Thread.sleep(400);
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread has been interrupted");
+        }
     }
 }
