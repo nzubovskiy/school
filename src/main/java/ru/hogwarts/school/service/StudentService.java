@@ -105,16 +105,13 @@ public class StudentService {
         logger.info("Method getStudentsList called");
         List<Student> studentList = studentRepository.findAllSortedById();
 
-        studentToConsole(studentList.get(0));
-        studentToConsole(studentList.get(1));
+        studentToConsole(studentList.get(0), studentList.get(1));
 
         new Thread(() -> {
-            studentToConsole(studentList.get(2));
-            studentToConsole(studentList.get(3));
+            studentToConsole(studentList.get(2), studentList.get(3));
         }).start();
         new Thread(() -> {
-            studentToConsole(studentList.get(4));
-            studentToConsole(studentList.get(5));
+            studentToConsole(studentList.get(4), studentList.get(5));
         }).start();
         return " ";
     }
@@ -123,33 +120,32 @@ public class StudentService {
         logger.info("Method getStudentsListSync called");
         List<Student> studentList = studentRepository.findAllSortedById();
 
-        studentToConsoleSync(studentList.get(0));
-        studentToConsoleSync(studentList.get(1));
+        studentToConsoleSync(studentList.get(0), studentList.get(1));
 
         new Thread(() -> {
-            studentToConsoleSync(studentList.get(2));
-            studentToConsoleSync(studentList.get(3));
+            studentToConsoleSync(studentList.get(2), studentList.get(3));
         }).start();
         new Thread(() -> {
-            studentToConsoleSync(studentList.get(4));
-            studentToConsoleSync(studentList.get(5));
+            studentToConsoleSync(studentList.get(4), studentList.get(5));
         }).start();
         return " ";
     }
 
-    public void studentToConsole(Student student) {
+    public void studentToConsole(Student student, Student nextStudent) {
         try {
             System.out.println(student);
+            System.out.println(nextStudent);
             Thread.sleep(400);
         } catch (InterruptedException e) {
             System.out.println("Thread has been interrupted");
         }
     }
 
-    public void studentToConsoleSync(Student student) {
+    public void studentToConsoleSync(Student student, Student nextStudent) {
         try {
             synchronized (flag) {
                 System.out.println(student);
+                System.out.println(nextStudent);
                 Thread.sleep(400);
             }
         } catch (InterruptedException e) {
