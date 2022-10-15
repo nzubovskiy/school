@@ -17,12 +17,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/** 
+ * RestController class that processes avatar requests {@link "/avatar"}
+ * @autor nzubovskiy
+ * @version 1.1
+*/
 @RestController
 @RequestMapping("/avatar")
 public class AvatarController {
 
+    /** Field avatarService */
     private final AvatarService avatarService;
 
+    
     public AvatarController(AvatarService avatarService) {
         this.avatarService = avatarService;
     }
